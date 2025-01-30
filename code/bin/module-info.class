@@ -1,0 +1,5 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+module encrypter {
+   requires java.desktop;
+   requires java.sql;
+}
