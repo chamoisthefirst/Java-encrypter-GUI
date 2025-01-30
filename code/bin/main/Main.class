@@ -1,0 +1,117 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+package main;
+
+import java.awt.Color;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class Main implements ActionListener {
+   public static JLabel keyLabel;
+   public static JTextField keyTextField;
+   public static JLabel messageLabel;
+   public static JTextField messageTextField;
+   public static JButton encryptButton;
+   public static JButton decryptButton;
+   public static JLabel outputLabel;
+   public static JTextField outputTextField;
+   public static Encryptor encryptor = new Encryptor();
+
+   public Main() {
+   }
+
+   public static void main(String[] args) {
+      Color textColor = new Color(8947848);
+      Color backgroundColor = new Color(2171169);
+      Color accentColor = new Color(3355443);
+      JPanel panel = new JPanel();
+      panel.setBackground(backgroundColor);
+      JFrame frame = new JFrame("encryptor");
+      frame.setExtendedState(6);
+      frame.setDefaultCloseOperation(3);
+      frame.add(panel);
+      frame.setBackground(backgroundColor);
+      panel.setLayout((LayoutManager)null);
+      frame.setVisible(true);
+      int height = frame.getHeight();
+      int yAlign = (height - 190) / 2;
+      int width = frame.getWidth();
+      int xAlign = (width - 525) / 2;
+      int lW = 80;
+      int tFW = 400 + xAlign;
+      xAlign /= 2;
+      int h = 25;
+      frame.setVisible(false);
+      keyLabel = new JLabel("Key: ");
+      keyLabel.setBounds(xAlign + 10, yAlign + 20, lW, h);
+      keyLabel.setForeground(textColor);
+      panel.add(keyLabel);
+      keyTextField = new JTextField(20);
+      keyTextField.setBounds(xAlign + 100, yAlign + 20, tFW, h);
+      keyTextField.setForeground(textColor);
+      keyTextField.setCaretColor(textColor);
+      keyTextField.setBackground(accentColor);
+      keyTextField.setBorder(BorderFactory.createLineBorder(backgroundColor, 2));
+      panel.add(keyTextField);
+      messageLabel = new JLabel("Message: ");
+      messageLabel.setBounds(xAlign + 10, yAlign + 50, lW, h);
+      messageLabel.setForeground(textColor);
+      panel.add(messageLabel);
+      messageTextField = new JTextField(20);
+      messageTextField.setBounds(xAlign + 100, yAlign + 50, tFW, h);
+      messageTextField.setForeground(textColor);
+      messageTextField.setBackground(textColor);
+      messageTextField.setBackground(accentColor);
+      messageTextField.setBorder(BorderFactory.createLineBorder(backgroundColor, 2));
+      panel.add(messageTextField);
+      outputLabel = new JLabel("output");
+      outputLabel.setBounds(xAlign + 10, yAlign + 80, 300, h);
+      outputLabel.setForeground(textColor);
+      panel.add(outputLabel);
+      outputTextField = new JTextField();
+      outputTextField.setBounds(xAlign + 100, yAlign + 80, tFW, h);
+      outputTextField.setForeground(textColor);
+      outputTextField.setCaretColor(textColor);
+      outputTextField.setBackground(accentColor);
+      outputTextField.setEditable(false);
+      outputTextField.setBorder(BorderFactory.createLineBorder(backgroundColor, 2));
+      panel.add(outputTextField);
+      int sizeDiff = 15;
+      encryptButton = new JButton("encrypt");
+      encryptButton.setBounds(xAlign + 100 + tFW / (sizeDiff * 2), yAlign + 120, tFW * (sizeDiff / 2 - 1) / sizeDiff, h);
+      encryptButton.addActionListener(new Main());
+      panel.add(encryptButton);
+      decryptButton = new JButton("decrypt");
+      decryptButton.setBounds(xAlign + 100 + tFW * (sizeDiff + 1) / (sizeDiff * 2), yAlign + 120, tFW * (sizeDiff / 2 - 1) / sizeDiff, h);
+      decryptButton.addActionListener(new Main());
+      panel.add(decryptButton);
+      frame.setVisible(true);
+      frame.setResizable(false);
+   }
+
+   public void actionPerformed(ActionEvent e) {
+      String key = keyTextField.getText();
+      String input = messageTextField.getText();
+      encryptor.changeKey(key);
+      if (!key.isEmpty() && !input.isBlank()) {
+         String message;
+         if (e.getSource() == encryptButton) {
+            message = encryptor.encrypt(input);
+         } else {
+            if (e.getSource() != decryptButton) {
+               return;
+            }
+
+            message = encryptor.decrypt(input);
+         }
+
+         outputTextField.setText(message);
+      }
+   }
+}
